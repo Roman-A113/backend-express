@@ -3,15 +3,15 @@ const router = express.Router();
 
 users = [
   {
-    "id": 1,
+    "id": 0,
     "name": "Roma"
   },
   {
-    "id": 2,
+    "id": 1,
     "name": "Sonya"
   },
   {
-    "id": 3,
+    "id": 2,
     "name": "Igor"
   }];
 
@@ -20,6 +20,12 @@ router.get('/', function (req, res, next) {
   res.send({
     items: users
   })
+});
+router.get('/:id', function (req, res, next) {
+  id = Number(req.params.id);
+  if (id >= users.length)
+    return res.status(404).send('not found');
+  res.send(users[id]);
 });
 router.post('/', function (req, res, next) {
   user = { "id": users[users.length - 1].id + 1, "name": req.body.name }
