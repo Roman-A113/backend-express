@@ -14,7 +14,7 @@ function getUserById(id) {
     if (!id || typeof id !== 'number' || id <= 0) {
       resolve(null);
     }
-    
+
     db.get('SELECT * FROM users WHERE id = ?', [id], (err, row) => {
       if (err) resolve(null);
       else resolve(row);
@@ -32,23 +32,25 @@ router.get('/:id', async function (req, res, next) {
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
-    db.all("SELECT id, name FROM users", [], (err, rows) => {
-     if (err) {
-        console.log(err);
-        res.status(500).json({ error: err.message });
-     } else {
-        res.json(rows);
-     }
+  db.all("SELECT id, name FROM users", [], (err, rows) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ error: err.message });
+    } else {
+      res.json(rows);
+    }
   });
 });
 
 router.post('/', function (req, res, next) {
   const insert = "INSERT INTO users (name) VALUES (?)";
-  
-  db.run(insert, [req.body.name], function(err) {
-    if (err) return res.status(500).send("internal server error");
+
+  db.run(insert, [req.body.name], function (err) {
+    if (err)
+      return res.status(500).send("internal server error");
     db.get('SELECT * FROM users WHERE id = ?', [this.lastID], (err, user) => {
-      if (err) return res.status(500).send("internal server error");
+      if (err) 
+        return res.status(500).send("internal server error");
       res.status(201).json(user);
     });
   });
