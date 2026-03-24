@@ -27,6 +27,7 @@ router.get('/:id', function (req, res, next) {
     return res.status(404).send('not found');
   res.send(users[id]);
 });
+
 router.post('/', function (req, res, next) {
   user = { "id": users[users.length - 1].id + 1, "name": req.body.name }
   users.push(user);
